@@ -1,7 +1,7 @@
 package es.iesjandula.hotelv1.gestionhotel.model;
 
 public enum EstadoPago {
-    PENDIENTE("Pediente"),
+    PENDIENTE("Pendiente"),
     COMPLETADO("Completado"),
     CANCELADO("Cancelado"),
     FALLIDO("Fallido");
@@ -13,6 +13,16 @@ public enum EstadoPago {
 
     public String getNombre() {
         return nombre;
+    }
+
+
+    public static EstadoPago fromNombre(String nombre) {
+        for (EstadoPago estado : EstadoPago.values()) {
+            if (estado.getNombre().equalsIgnoreCase(nombre)) {
+                return estado;
+            }
+        }
+        throw new IllegalArgumentException("Estado de pago no válido: " + nombre);
     }
 
 

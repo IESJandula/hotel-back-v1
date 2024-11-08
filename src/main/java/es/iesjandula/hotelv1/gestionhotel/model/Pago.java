@@ -25,8 +25,6 @@ public class Pago {
     private Reserva reserva;
 
 
-    //Relaciones.
-
     // Relaciones
     @OneToMany(mappedBy = "pago", cascade = CascadeType.ALL)
     private List<Reserva> reservas;
