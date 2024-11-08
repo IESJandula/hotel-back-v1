@@ -65,8 +65,8 @@ public class Cliente {
                 '}';
     }
 
-    //Relación Cliente: One-to-Many con Reserva: Un usuario puede tener muchas reservas.
-  //  @OneToMany(mappedBy = "cliente", cascade = CascadeType.ALL)
-   // private List<Reserva> reservas;
+   // Relación Cliente: One-to-Many con Reserva: Un usuario puede tener muchas reservas.
+    @OneToMany(mappedBy = "cliente", cascade = CascadeType.ALL)
+    private List<Reserva> reservas;
 
 }
