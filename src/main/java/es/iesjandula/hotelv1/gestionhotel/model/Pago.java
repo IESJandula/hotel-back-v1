@@ -26,10 +26,11 @@ public class Pago {
 
 
     //Relaciones.
-
-    // Relaciones
-    @OneToMany(mappedBy = "pago", cascade = CascadeType.ALL)
-    private List<Reserva> reservas;
+    // Relación ManyToOne con Reserva.
+    // Un pago está asociado a una única reserva.
+    @ManyToOne
+    @JoinColumn(name = "reserva_id", nullable = false)
+    private Reserva reserva;
 
     //Constructor vacío
     public Pago() {
