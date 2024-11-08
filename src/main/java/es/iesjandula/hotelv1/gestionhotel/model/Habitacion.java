@@ -85,4 +85,12 @@ public class Habitacion {
                 ", estado=" + estado +
                 '}';
     }
+
+    @ManyToMany
+    @JoinTable(
+            name = "estudiante_curso",
+            joinColumns = @JoinColumn(name = "estudiante_id"),
+            inverseJoinColumns = @JoinColumn(name = "curso_id")
+    )
+    private List<Reserva> cursos;
 }
