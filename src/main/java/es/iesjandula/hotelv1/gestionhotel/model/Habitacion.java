@@ -1,6 +1,7 @@
 package es.iesjandula.hotelv1.gestionhotel.model;
 
 import jakarta.persistence.*;
+import java.util.List;
 
 @Entity
 public class Habitacion {
@@ -88,9 +89,9 @@ public class Habitacion {
 
     @ManyToMany
     @JoinTable(
-            name = "estudiante_curso",
-            joinColumns = @JoinColumn(name = "estudiante_id"),
-            inverseJoinColumns = @JoinColumn(name = "curso_id")
+            name = "habitacion_reserva",
+            joinColumns = @JoinColumn(name = "habitacion_id"),
+            inverseJoinColumns = @JoinColumn(name = "reserva_id")
     )
-    private List<Reserva> cursos;
+    private List<Reserva> reservas;
 }
