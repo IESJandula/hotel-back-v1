@@ -1,4 +1,7 @@
 package es.iesjandula.hotelv1.gestionhotel.repository;
 
-public interface ReservaRepository {
+import es.iesjandula.hotelv1.gestionhotel.model.Reserva;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+public interface ReservaRepository extends JpaRepository<Reserva, Long> {
 }
