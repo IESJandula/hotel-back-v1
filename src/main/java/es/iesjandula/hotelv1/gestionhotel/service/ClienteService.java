@@ -17,7 +17,6 @@ public class ClienteService {
     }
 
     //Metodo para obtener un cliente
-    // Metodo para obtener un cliente
     public Cliente obtenerCliente(Long id) throws ResourceNotFoundException {
         return clienteRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Cliente con ID " + id + " no encontrado"));
