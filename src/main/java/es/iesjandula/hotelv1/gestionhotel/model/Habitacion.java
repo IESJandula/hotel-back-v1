@@ -2,6 +2,8 @@ package es.iesjandula.hotelv1.gestionhotel.model;
 
 import jakarta.persistence.*;
 
+import java.util.List;
+
 @Entity
 public class Habitacion {
     @Id
