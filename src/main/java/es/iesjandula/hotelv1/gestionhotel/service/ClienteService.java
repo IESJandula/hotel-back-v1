@@ -11,13 +11,12 @@ public class ClienteService {
     @Autowired
     private ClienteRepository clienteRepository;
 
-    //Metodo para crear un usuario
+    //Metodo para crear un cliente
     public Cliente crearCliente(Cliente cliente) {
         return clienteRepository.save(cliente);
     }
 
     //Metodo para obtener un cliente
-    // Metodo para obtener un cliente
     public Cliente obtenerCliente(Long id) throws ResourceNotFoundException {
         return clienteRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Cliente con ID " + id + " no encontrado"));
@@ -28,6 +27,7 @@ public class ClienteService {
         Cliente cliente = obtenerCliente(id);
         cliente.setNombre(nuevosDatos.getNombre());
         cliente.setEmail(nuevosDatos.getEmail());
+        cliente.setTelefono(nuevosDatos.getTelefono());
         return clienteRepository.save(cliente);
     }
 
