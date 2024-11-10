@@ -11,7 +11,7 @@ public class ClienteService {
     @Autowired
     private ClienteRepository clienteRepository;
 
-    //Metodo para crear un usuario
+    //Metodo para crear un cliente
     public Cliente crearCliente(Cliente cliente) {
         return clienteRepository.save(cliente);
     }
@@ -27,6 +27,7 @@ public class ClienteService {
         Cliente cliente = obtenerCliente(id);
         cliente.setNombre(nuevosDatos.getNombre());
         cliente.setEmail(nuevosDatos.getEmail());
+        cliente.setTelefono(nuevosDatos.getTelefono());
         return clienteRepository.save(cliente);
     }
 
