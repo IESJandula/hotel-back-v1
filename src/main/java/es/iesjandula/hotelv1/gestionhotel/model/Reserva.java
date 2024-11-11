@@ -2,6 +2,8 @@ package es.iesjandula.hotelv1.gestionhotel.model;
 
 import es.iesjandula.hotelv1.gestionhotel.Enum.EstadoReserva;
 import jakarta.persistence.*;
+
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Date;
 
@@ -10,8 +12,8 @@ public class Reserva {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
-    private Date fechaInicio;
-    private Date fechaFin;
+    private LocalDate fechaInicio;
+    private LocalDate fechaFin;
     private EstadoReserva reserva;
 
     // Relación Many-to-One con Cliente: Una reserva está asociada a un único cliente.
@@ -40,7 +42,7 @@ public class Reserva {
     public Reserva() {
     }
 
-    public Reserva(long id, Date fechaInicio, Date fechaFin, EstadoReserva reserva, Cliente cliente) {
+    public Reserva(long id, LocalDate fechaInicio, LocalDate fechaFin, EstadoReserva reserva, Cliente cliente) {
         this.id = id;
         this.fechaInicio = fechaInicio;
         this.fechaFin = fechaFin;
@@ -56,19 +58,19 @@ public class Reserva {
         this.id = id;
     }
 
-    public Date getFechaInicio() {
+    public LocalDate getFechaInicio() {
         return fechaInicio;
     }
 
-    public void setFechaInicio(Date fechaInicio) {
+    public void setFechaInicio(LocalDate fechaInicio) {
         this.fechaInicio = fechaInicio;
     }
 
-    public Date getFechaFin() {
+    public LocalDate getFechaFin() {
         return fechaFin;
     }
 
-    public void setFechaFin(Date fechaFin) {
+    public void setFechaFin(LocalDate fechaFin) {
         this.fechaFin = fechaFin;
     }
 
@@ -96,6 +98,10 @@ public class Reserva {
                 ", fechaFin=" + fechaFin +
                 ", reserva=" + reserva +
                 ", cliente=" + cliente +
+                ", habitaciones=" + habitaciones +
+                ", pagos=" + pagos +
+                ", reservaHabitaciones=" + reservaHabitaciones +
                 '}';
     }
 }
+
