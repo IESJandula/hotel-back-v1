@@ -97,4 +97,7 @@ public class Habitacion {
             inverseJoinColumns = @JoinColumn(name = "reserva_id")
     )
     private List<Reserva> reservas;
+
+    @OneToMany(mappedBy = "habitacion", cascade = CascadeType.ALL)
+    private List<ReservaHabitacion> reservaHabitaciones;
 }
