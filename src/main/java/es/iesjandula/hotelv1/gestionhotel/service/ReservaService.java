@@ -6,6 +6,8 @@ import es.iesjandula.hotelv1.gestionhotel.repository.ReservaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service
 public class ReservaService {
     @Autowired
@@ -16,16 +18,18 @@ public class ReservaService {
         return reservaRepository.save(reserva);
     }
 
-    //Metodo para obtener una reserva
-    public Reserva obtenerReserva(Long id) throws ResourceNotFoundException {
-        return reservaRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("reserva no encontrada"));
-    }
+    // Método para obtener una reserva por ID
+    public Reserva obtenerReservaPorId(long idReserva) {
+        // Buscamos la reserva en el repositorio usando el ID
+        Optional<Reserva> reservaOpt = reservaRepository.findById(idReserva);
 
+        // Si la reserva existe, la devolvemos; de lo contrario, lanzamos una excepción
+        return reservaOpt.orElseThrow(() -> new RuntimeException("Reserva no encontrada con el ID: " + idReserva));
+    }
 
     //Metodo para Actualizar reserva
     public Reserva actualizarReserva(Long id, Reserva nuevosDatos) throws ResourceNotFoundException {
-        Reserva reserva = obtenerReserva(id);
+        Reserva reserva = obtenerReservaPorId(id);
         reserva.setId(nuevosDatos.getId());
         reserva.setCliente(nuevosDatos.getCliente());
         reserva.setFechaInicio(nuevosDatos.getFechaInicio());
@@ -35,9 +39,11 @@ public class ReservaService {
 
     //metodo para eliminar una reserva
     public void eliminarReserva(Long id) throws ResourceNotFoundException {
-        Reserva reserva = obtenerReserva(id);
+        Reserva reserva = obtenerReservaPorId(id);
         reservaRepository.delete(reserva);
     }
+
+
 
 
 
