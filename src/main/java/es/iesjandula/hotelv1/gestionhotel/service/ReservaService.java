@@ -1,4 +1,4 @@
-package es.iesjandula.hotelv1.gestionhotel.Service;
+package es.iesjandula.hotelv1.gestionhotel.service;
 
 import es.iesjandula.hotelv1.gestionhotel.exception.ResourceNotFoundException;
 import es.iesjandula.hotelv1.gestionhotel.model.Reserva;
@@ -22,6 +22,7 @@ public class ReservaService {
                 .orElseThrow(() -> new ResourceNotFoundException("reserva no encontrada"));
     }
 
+
     //Metodo para Actualizar reserva
     public Reserva actualizarReserva(Long id, Reserva nuevosDatos) throws ResourceNotFoundException {
         Reserva reserva = obtenerReserva(id);
@@ -36,7 +37,6 @@ public class ReservaService {
     public void eliminarReserva(Long id) throws ResourceNotFoundException {
         Reserva reserva = obtenerReserva(id);
         reservaRepository.delete(reserva);
-
     }
 
 
