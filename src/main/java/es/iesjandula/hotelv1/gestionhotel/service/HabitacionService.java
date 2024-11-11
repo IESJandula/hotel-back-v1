@@ -1,4 +1,4 @@
-package es.iesjandula.hotelv1.gestionhotel.Service;
+package es.iesjandula.hotelv1.gestionhotel.service;
 
 import es.iesjandula.hotelv1.gestionhotel.model.Habitacion;
 import es.iesjandula.hotelv1.gestionhotel.repository.HabitacionRepository;
