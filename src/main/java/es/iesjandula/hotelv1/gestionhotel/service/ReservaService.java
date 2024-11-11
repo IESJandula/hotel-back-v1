@@ -1,7 +1,6 @@
 package es.iesjandula.hotelv1.gestionhotel.service;
 
 import es.iesjandula.hotelv1.gestionhotel.exception.ResourceNotFoundException;
-import es.iesjandula.hotelv1.gestionhotel.model.Cliente;
 import es.iesjandula.hotelv1.gestionhotel.model.Reserva;
 import es.iesjandula.hotelv1.gestionhotel.repository.ReservaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
