@@ -34,6 +34,7 @@ public class Pago {
     @JoinColumn(name = "reserva_id", nullable = false)
     private Reserva reserva;
 
+
     //Constructor vacío
     public Pago() {
     }

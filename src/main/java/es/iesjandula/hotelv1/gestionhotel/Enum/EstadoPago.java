@@ -23,6 +23,7 @@ public enum EstadoPago {
     }
 
     //Método de acceso
+
     public String getNombre() {
         return nombre;
     }
@@ -33,5 +34,14 @@ public enum EstadoPago {
     public String toString() {
         return getNombre(); // Devuelve el nombre del estado, utilizando el getter
     }
+    public static EstadoPago fromNombre(String nombre) {
+        for (EstadoPago estado : EstadoPago.values()) {
+            if (estado.getNombre().equalsIgnoreCase(nombre)) {
+                return estado;
+            }
+        }
+        throw new IllegalArgumentException("Estado de pago no válido: " + nombre);
+    }
+
 }
 

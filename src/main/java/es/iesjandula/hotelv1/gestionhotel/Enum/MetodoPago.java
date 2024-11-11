@@ -1,11 +1,10 @@
 //Paquete.
 package es.iesjandula.hotelv1.gestionhotel.Enum;
 
-/**
- * Definición de la clase enumerada MetodoPago.
+ * Definición de la clase MetodoPago.
  */
 public enum MetodoPago {
-    //Definimos los posibles estados del Método de pago.
+
     TARJETA_CREDITO("Tarjeta de Credito"),
     TARJETA_DEBITO("Tarjeta de Debito"),
     EFECTIVO("Efectivo"),
@@ -17,6 +16,12 @@ public enum MetodoPago {
 
     /**
      * Constructor de la clase enumerada MetodoPago con el siguiente parámetro.
+=======
+    //Atributo
+    private final String nombre;
+
+    /**
+     * Constructor de la clase
      * @param nombre
      */
     MetodoPago(String nombre) {
@@ -34,4 +39,5 @@ public enum MetodoPago {
     public String toString() {
         return getNombre();
     } // Devuelve el nombre del estado, utilizando el getter
+
 }
