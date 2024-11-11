@@ -1,5 +1,6 @@
 package es.iesjandula.hotelv1.gestionhotel.model;
 
+import es.iesjandula.hotelv1.gestionhotel.Enum.EstadoReserva;
 import jakarta.persistence.*;
 
 import java.util.Date;
