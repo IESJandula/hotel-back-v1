@@ -6,7 +6,6 @@ import es.iesjandula.hotelv1.gestionhotel.Enum.EstadoPago;
 import es.iesjandula.hotelv1.gestionhotel.Enum.MetodoPago;
 import jakarta.persistence.*;
 import java.util.Date;
-import java.util.List;
 
 /**
  * Definición de la entidad pago.
@@ -14,12 +13,13 @@ import java.util.List;
 @Entity
 @Table(name="Pago")
 public class Pago {
+
+    //Atributos.
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
     private long id;
     private double monto;
     private Date fecha;
-
     @Enumerated(EnumType.STRING)
     private MetodoPago metodo;
     @Enumerated(EnumType.STRING)
@@ -27,14 +27,27 @@ public class Pago {
     private Reserva reserva;
 
 
-    // Relaciones
-    @OneToMany(mappedBy = "pago", cascade = CascadeType.ALL)
-    private List<Reserva> reservas;
+    //Relaciones.
+    // Relación ManyToOne con Reserva.
+    // Un pago está asociado a una única reserva.
+    @ManyToOne
+    @JoinColumn(name = "reserva_id", nullable = false)
+    private Reserva reserva;
+
 
     //Constructor vacío
     public Pago() {
     }
 
+    /**
+     * Constructor de la clase (Entidad) Pago con los siguientes parámetros.
+     * @param id
+     * @param monto
+     * @param fecha
+     * @param metodo
+     * @param estado
+     * @param reserva
+     */
 
     public Pago(long id, double monto, Date fecha, MetodoPago metodo, EstadoPago estado, Reserva reserva) {
         this.id = id;
@@ -45,6 +58,7 @@ public class Pago {
         this.reserva = reserva;
     }
 
+    //Métodos de acceso.
     public long getId() {
         return id;
     }
@@ -93,6 +107,7 @@ public class Pago {
         this.reserva = reserva;
     }
 
+    //Método toString() sobrescrito.
     @Override
     public String toString() {
         return String.format(
@@ -105,7 +120,5 @@ public class Pago {
                 (reserva != null ? reserva.toString() : "null")
         );
     }
-
-
 
 }
