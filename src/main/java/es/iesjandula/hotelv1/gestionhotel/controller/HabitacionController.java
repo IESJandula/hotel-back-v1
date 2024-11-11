@@ -34,7 +34,6 @@ public class HabitacionController {
     public List<Habitacion> obtenerHabitacionesDisponibles(
             @RequestParam("fechaInicio") String fechaInicio,
             @RequestParam("fechaFin") String fechaFin) {
-
         LocalDate inicio = LocalDate.parse(fechaInicio);
         LocalDate fin = LocalDate.parse(fechaFin);
 
