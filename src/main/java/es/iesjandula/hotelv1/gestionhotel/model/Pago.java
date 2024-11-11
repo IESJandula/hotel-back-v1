@@ -2,6 +2,8 @@
 package es.iesjandula.hotelv1.gestionhotel.model;
 
 //Importaciones.
+import es.iesjandula.hotelv1.gestionhotel.Enum.EstadoPago;
+import es.iesjandula.hotelv1.gestionhotel.Enum.MetodoPago;
 import jakarta.persistence.*;
 import java.util.Date;
 import java.util.List;

@@ -2,7 +2,7 @@
 package es.iesjandula.hotelv1.gestionhotel.Service;
 
 //Importaciones.
-import es.iesjandula.hotelv1.gestionhotel.model.EstadoPago;
+import es.iesjandula.hotelv1.gestionhotel.Enum.EstadoPago;
 import es.iesjandula.hotelv1.gestionhotel.model.Pago;
 import es.iesjandula.hotelv1.gestionhotel.repository.PagoRepository;
 import jakarta.persistence.EntityNotFoundException;
