@@ -1,6 +1,6 @@
 //Paquete.
 package es.iesjandula.hotelv1.gestionhotel.Enum;
-
+/*
  * Definición de la clase MetodoPago.
  */
 public enum MetodoPago {
@@ -16,12 +16,6 @@ public enum MetodoPago {
 
     /**
      * Constructor de la clase enumerada MetodoPago con el siguiente parámetro.
-=======
-    //Atributo
-    private final String nombre;
-
-    /**
-     * Constructor de la clase
      * @param nombre
      */
     MetodoPago(String nombre) {
