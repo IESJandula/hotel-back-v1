@@ -14,10 +14,12 @@ public class ReservaHabitacion {
     @EmbeddedId
     private ReservaHabitacionId id;
 
+    //Relaciones Many-to-One con Reserva: Una reserva puede incluir muchas habitaciones.
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "reserva_id", insertable = false, updatable = false)
     private Reserva reserva;
 
+    //Relaciones ManyToOne con habitacion Una habitación puede estar en muchas reservas.
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "habitacion_id", insertable = false, updatable = false)
     private Habitacion habitacion;

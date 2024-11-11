@@ -32,6 +32,10 @@ public class Reserva {
     @OneToMany(mappedBy = "reserva", cascade = CascadeType.ALL)
     private List<Pago> pagos;
 
+    //Relacion One-to-Many con ReservaHabitacion
+    @OneToMany(mappedBy = "reserva", cascade = CascadeType.ALL)
+    private List<ReservaHabitacion> reservaHabitaciones;
+
     //Constructor vacio
     public Reserva() {
     }
