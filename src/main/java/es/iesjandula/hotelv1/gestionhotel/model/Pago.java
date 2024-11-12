@@ -46,7 +46,6 @@ public class Pago {
      * @param fecha
      * @param metodo
      * @param estado
-     * @param reserva
      */
 
     public Pago(long id, double monto, Date fecha, MetodoPago metodo, EstadoPago estado) {
