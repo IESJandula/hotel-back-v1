@@ -24,7 +24,7 @@ public class Pago {
     private MetodoPago metodo;
     @Enumerated(EnumType.STRING)
     private EstadoPago estado;
-    private Reserva reserva;
+
 
 
     //Relaciones.
@@ -49,13 +49,12 @@ public class Pago {
      * @param reserva
      */
 
-    public Pago(long id, double monto, Date fecha, MetodoPago metodo, EstadoPago estado, Reserva reserva) {
+    public Pago(long id, double monto, Date fecha, MetodoPago metodo, EstadoPago estado) {
         this.id = id;
         this.monto = monto;
         this.fecha = fecha;
         this.metodo = metodo;
         this.estado = estado;
-        this.reserva = reserva;
     }
 
     //Métodos de acceso.
@@ -111,14 +110,12 @@ public class Pago {
     @Override
     public String toString() {
         return String.format(
-                "id: %d, monto: %.2f, fecha: %s, metodo: %s, estado: %s, reserva: %s",
+                "id: %d, monto: %.2f, fecha: %s, metodo: %s, estado: %s",
                 id,
                 monto,
                 (fecha != null ? fecha.toString() : "null"),
                 (metodo != null ? metodo.toString() : "null"),
-                (estado != null ? estado.toString() : "null"),
-                (reserva != null ? reserva.toString() : "null")
+                (estado != null ? estado.toString() : "null")
         );
     }
-
 }
