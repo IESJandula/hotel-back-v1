@@ -1,5 +1,5 @@
 //Paquete.
-package es.iesjandula.hotelv1.gestionhotel.model;
+package es.iesjandula.hotelv1.gestionhotel.Model;
 
 //Importaciones.
 import java.io.Serializable;

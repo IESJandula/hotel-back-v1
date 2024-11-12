@@ -1,8 +1,8 @@
 //Paquete.
-package es.iesjandula.hotelv1.gestionhotel.repository;
+package es.iesjandula.hotelv1.gestionhotel.Repository;
 
 //Importaciones.
-import es.iesjandula.hotelv1.gestionhotel.model.Pago;
+import es.iesjandula.hotelv1.gestionhotel.Model.Pago;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

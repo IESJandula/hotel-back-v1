@@ -1,7 +1,7 @@
-package es.iesjandula.hotelv1.gestionhotel.service;
+package es.iesjandula.hotelv1.gestionhotel.Service;
 
-import es.iesjandula.hotelv1.gestionhotel.model.Habitacion;
-import es.iesjandula.hotelv1.gestionhotel.repository.HabitacionRepository;
+import es.iesjandula.hotelv1.gestionhotel.Model.Habitacion;
+import es.iesjandula.hotelv1.gestionhotel.Repository.HabitacionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

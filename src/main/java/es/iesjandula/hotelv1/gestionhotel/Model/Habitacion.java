@@ -1,9 +1,7 @@
-package es.iesjandula.hotelv1.gestionhotel.model;
+package es.iesjandula.hotelv1.gestionhotel.Model;
 
 import es.iesjandula.hotelv1.gestionhotel.Enum.EstadoHabitacion;
 import jakarta.persistence.*;
-import java.util.List;
-
 import java.util.List;
 
 @Entity

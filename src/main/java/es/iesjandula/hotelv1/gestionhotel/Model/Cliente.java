@@ -1,4 +1,4 @@
-package es.iesjandula.hotelv1.gestionhotel.model;
+package es.iesjandula.hotelv1.gestionhotel.Model;
 
 import jakarta.persistence.*;
 import java.util.List;

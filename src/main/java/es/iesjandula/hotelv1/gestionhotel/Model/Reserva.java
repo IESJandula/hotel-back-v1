@@ -1,4 +1,4 @@
-package es.iesjandula.hotelv1.gestionhotel.model;
+package es.iesjandula.hotelv1.gestionhotel.Model;
 
 import es.iesjandula.hotelv1.gestionhotel.Enum.EstadoReserva;
 import jakarta.persistence.*;

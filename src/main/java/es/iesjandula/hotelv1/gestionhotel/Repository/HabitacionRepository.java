@@ -1,6 +1,6 @@
-package es.iesjandula.hotelv1.gestionhotel.repository;
+package es.iesjandula.hotelv1.gestionhotel.Repository;
 
-import es.iesjandula.hotelv1.gestionhotel.model.Habitacion;
+import es.iesjandula.hotelv1.gestionhotel.Model.Habitacion;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
