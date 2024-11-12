@@ -1,7 +1,7 @@
-//Paquete.
-package es.iesjandula.hotelv1.gestionhotel.service;
+// Paquete.
+package es.iesjandula.hotelv1.gestionhotel.Service;
 
-//Importaciones.
+// Importaciones.
 import es.iesjandula.hotelv1.gestionhotel.Enum.EstadoPago;
 import es.iesjandula.hotelv1.gestionhotel.model.Pago;
 import es.iesjandula.hotelv1.gestionhotel.repository.PagoRepository;
@@ -9,6 +9,8 @@ import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 /**
  * Definición del servicio de Pago.
@@ -18,33 +20,28 @@ public class PagoService {
     @Autowired
     private PagoRepository pagoRepository;
 
-    //Método para crear un pago.
+    // Método para crear un pago.
     @Transactional
     public Pago crearPago(Pago pago) {
         return pagoRepository.save(pago);
     }
 
-    //Método para obtenerPago.
+    // Método para obtener un pago por ID.
     public Pago obtenerPago(Long id) {
         return pagoRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Pago no encontrado"));
     }
 
-    //Método para actualizar pago.
+    // Método para actualizar el estado de un pago.
     @Transactional
     public Pago actualizarEstadoPago(Long id, EstadoPago nuevoEstado) {
-        // Buscar el pago por ID
         Pago pago = pagoRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Pago no encontrado con ID: " + id));
-
-        // Actualizar el estado del pago
         pago.setEstado(nuevoEstado);
-
-        // Guardar el pago actualizado en el repositorio
         return pagoRepository.save(pago);
     }
 
-    //Método para eliminarPago.
+    // Método para eliminar un pago por ID.
     @Transactional
     public void eliminarPago(Long id) {
         if (!pagoRepository.existsById(id)) {
@@ -53,4 +50,8 @@ public class PagoService {
         pagoRepository.deleteById(id);
     }
 
+    // Método para obtener todos los pagos.
+    public List<Pago> obtenerTodosLosPagos() {
+        return pagoRepository.findAll();
+    }
 }
