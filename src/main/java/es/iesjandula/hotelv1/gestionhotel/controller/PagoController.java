@@ -17,7 +17,7 @@ import es.iesjandula.hotelv1.gestionhotel.service.PagoService;
  */
 @RestController
 @RequestMapping("/pagos")
-public class PagaController {
+public class PagoController {
 
     @Autowired
     private PagoService pagoService;
