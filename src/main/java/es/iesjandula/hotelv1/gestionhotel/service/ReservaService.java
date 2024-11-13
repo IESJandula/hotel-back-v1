@@ -1,6 +1,5 @@
 package es.iesjandula.hotelv1.gestionhotel.service;
 
-import es.iesjandula.hotelv1.gestionhotel.exception.ResourceNotFoundException;
 import es.iesjandula.hotelv1.gestionhotel.model.Reserva;
 import es.iesjandula.hotelv1.gestionhotel.repository.ReservaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,25 +26,20 @@ public class ReservaService {
         return reservaOpt.orElseThrow(() -> new RuntimeException("Reserva no encontrada con el ID: " + idReserva));
     }
 
-    //Metodo para Actualizar reserva
-    public Reserva actualizarReserva(Long id, Reserva nuevosDatos) throws ResourceNotFoundException {
+    // Método para actualizar una reserva
+    public Reserva actualizarReserva(Long id, Reserva nuevosDatos) {
         Reserva reserva = obtenerReservaPorId(id);
-        reserva.setId(nuevosDatos.getId());
         reserva.setCliente(nuevosDatos.getCliente());
         reserva.setFechaInicio(nuevosDatos.getFechaInicio());
         reserva.setFechaFin(nuevosDatos.getFechaFin());
         return reservaRepository.save(reserva);
     }
 
-    //metodo para eliminar una reserva
-    public void eliminarReserva(Long id) throws ResourceNotFoundException {
+    // Método para eliminar una reserva
+    public void eliminarReserva(Long id) {
         Reserva reserva = obtenerReservaPorId(id);
         reservaRepository.delete(reserva);
     }
-
-
-
-
 
 }
 
