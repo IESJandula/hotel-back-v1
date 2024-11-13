@@ -1,5 +1,5 @@
 // Paquete.
-package es.iesjandula.hotelv1.gestionhotel.Service;
+package es.iesjandula.hotelv1.gestionhotel.service;
 
 // Importaciones.
 import es.iesjandula.hotelv1.gestionhotel.Enum.EstadoPago;
