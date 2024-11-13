@@ -11,7 +11,7 @@ import java.util.List;
 
 @Repository
 public interface HabitacionRepository extends JpaRepository<Habitacion, Long> {
-    @Query("SELECT h FROM Habitacion h WHERE h.id NOT IN (SELECT r.habitacion.id FROM Reserva r WHERE (r.fechaInicio <= :fechaFin AND r.fechaFin >= :fechaInicio))")
+    @Query("SELECT h FROM Habitacion h WHERE h.id NOT IN " + "(SELECT hab.id FROM Reserva r JOIN r.habitaciones hab " + "WHERE (r.fechaInicio <= :fechaFin AND r.fechaFin >= :fechaInicio))")
     List<Habitacion> findHabitacionesDisponibles(LocalDate fechaInicio, LocalDate fechaFin);
 
     @Query("SELECT h FROM Habitacion h JOIN h.reservas r " + "WHERE (r.fechaInicio <= :fechaFin AND r.fechaFin >= :fechaInicio)")
