@@ -1,9 +1,12 @@
 package es.iesjandula.hotelv1.gestionhotel.service;
 
 import es.iesjandula.hotelv1.gestionhotel.model.Cliente;
+import es.iesjandula.hotelv1.gestionhotel.model.Reserva;
 import es.iesjandula.hotelv1.gestionhotel.repository.ClienteRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 public class ClienteService {
@@ -34,5 +37,11 @@ public class ClienteService {
     public void eliminarCliente(Long id) {
         Cliente cliente = obtenerCliente(id);
         clienteRepository.delete(cliente);
+    }
+
+    // Método para obtener las reservas de un cliente por su ID
+    public List<Reserva> obtenerReservasPorCliente(Long id) {
+        Cliente cliente = obtenerCliente(id); // Busca el cliente o lanza una excepción si no existe
+        return cliente.getReservas(); // Devuelve la lista de reservas del cliente
     }
 }

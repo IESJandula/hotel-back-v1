@@ -5,6 +5,7 @@ import es.iesjandula.hotelv1.gestionhotel.repository.ReservaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -39,6 +40,11 @@ public class ReservaService {
     public void eliminarReserva(Long id) {
         Reserva reserva = obtenerReservaPorId(id);
         reservaRepository.delete(reserva);
+    }
+
+    // Método para obtener reservas de un cliente específico
+    public List<Reserva> obtenerReservasPorCliente(Long clienteId) {
+        return reservaRepository.findByClienteId(clienteId);
     }
 
 }
