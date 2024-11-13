@@ -1,6 +1,5 @@
 package es.iesjandula.hotelv1.gestionhotel.service;
 
-import es.iesjandula.hotelv1.gestionhotel.exception.ResourceNotFoundException;
 import es.iesjandula.hotelv1.gestionhotel.model.Cliente;
 import es.iesjandula.hotelv1.gestionhotel.repository.ClienteRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,14 +15,14 @@ public class ClienteService {
         return clienteRepository.save(cliente);
     }
 
-    //Metodo para obtener un cliente
-    public Cliente obtenerCliente(Long id) throws ResourceNotFoundException {
+    // Método para obtener un cliente - lanzamos una excepcion si el cliente no es encontrado
+    public Cliente obtenerCliente(Long id) {
         return clienteRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Cliente con ID " + id + " no encontrado"));
+                .orElseThrow(() -> new IllegalArgumentException("Cliente con ID " + id + " no encontrado"));
     }
 
-    //Metodo para actualizar cliente
-    public Cliente actualizarCliente(Long id, Cliente nuevosDatos) throws ResourceNotFoundException {
+    // Método para actualizar cliente
+    public Cliente actualizarCliente(Long id, Cliente nuevosDatos) {
         Cliente cliente = obtenerCliente(id);
         cliente.setNombre(nuevosDatos.getNombre());
         cliente.setEmail(nuevosDatos.getEmail());
@@ -31,10 +30,9 @@ public class ClienteService {
         return clienteRepository.save(cliente);
     }
 
-    //metodo para eliminar un cliente
-    public void eliminarCliente(Long id) throws ResourceNotFoundException {
+    // Método para eliminar un cliente
+    public void eliminarCliente(Long id) {
         Cliente cliente = obtenerCliente(id);
         clienteRepository.delete(cliente);
-
     }
 }
