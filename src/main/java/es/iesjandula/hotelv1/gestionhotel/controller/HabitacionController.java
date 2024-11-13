@@ -39,4 +39,13 @@ public class HabitacionController {
 
         return habitacionService.obtenerHabitacionesDisponibles(inicio, fin);
     }
+    @GetMapping("/ocupadas")
+    public List<Habitacion> obtenerHabitacionesOcupadas(
+            @RequestParam("fechaInicio") String fechaInicioStr,
+            @RequestParam("fechaFin") String fechaFinStr) {
+        LocalDate fechaInicio = LocalDate.parse(fechaInicioStr);
+        LocalDate fechaFin = LocalDate.parse(fechaFinStr);
+
+        return habitacionService.obtenerHabitacionesOcupadas(fechaInicio, fechaFin);
+    }
 }
