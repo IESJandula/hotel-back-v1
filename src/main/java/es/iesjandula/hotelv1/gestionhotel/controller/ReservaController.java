@@ -30,7 +30,7 @@ public class ReservaController {
             Reserva reserva = reservaService.obtenerReservaPorId(id);
             return new ResponseEntity<>(reserva, HttpStatus.OK);
         } catch (IllegalArgumentException e) {
-            return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
 
@@ -59,7 +59,7 @@ public class ReservaController {
             Reserva reservaActualizada = reservaService.actualizarReserva(id, nuevosDatos);
             return new ResponseEntity<>(reservaActualizada, HttpStatus.OK);
         } catch (IllegalArgumentException e) {
-            return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
 }
