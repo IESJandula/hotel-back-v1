@@ -5,7 +5,6 @@ import es.iesjandula.hotelv1.gestionhotel.model.Reserva;
 import es.iesjandula.hotelv1.gestionhotel.service.ReservaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
@@ -18,76 +17,47 @@ public class ReservaController {
     @Autowired
     private ReservaService reservaService;
 
-    // Endpoint para crear una nueva reserva
-    @PostMapping("/reservar")
-    public ResponseEntity<?> realizarReserva(
-            @RequestParam Long clienteId,
-            @RequestParam int numeroHabitaciones,
-            @RequestParam LocalDate fechaInicio,
-            @RequestParam LocalDate fechaFin
-    ) {
-        try {
-            // Llamamos al servicio para crear la reserva
-            Reserva reserva = reservaService.crearReserva(clienteId, numeroHabitaciones, fechaInicio, fechaFin);
-            return new ResponseEntity<>(reserva, HttpStatus.CREATED); // Reserva creada correctamente
-        } catch (Exception e) {
-            // Manejo de excepciones más claro
-            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST); // Errores en la creación de reserva
-        }
+    // Método para crear una nueva reserva
+    @PostMapping("/crear")
+    @ResponseStatus(HttpStatus.CREATED)
+    public Reserva crearReserva(@RequestParam Long clienteId,
+                                @RequestParam int numeroHabitaciones,
+                                @RequestParam String fechaInicio,
+                                @RequestParam String fechaFin) {
+        // Aquí convendría convertir las fechas desde String a LocalDate
+        LocalDate inicio = LocalDate.parse(fechaInicio);
+        LocalDate fin = LocalDate.parse(fechaFin);
+        return reservaService.crearReserva(clienteId, numeroHabitaciones, inicio, fin);
     }
 
-    // Endpoint para obtener una reserva específica por ID
+    // Método para obtener una reserva por ID
     @GetMapping("/{id}")
-    public ResponseEntity<Reserva> obtenerReservaPorId(@PathVariable long id) {
-        try {
-            Reserva reserva = reservaService.obtenerReservaPorId(id);
-            return new ResponseEntity<>(reserva, HttpStatus.OK);
-        } catch (IllegalArgumentException e) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND); // Reserva no encontrada
-        }
+    public Reserva obtenerReserva(@PathVariable Long id) {
+        return reservaService.obtenerReservaPorId(id);
     }
 
-    // Endpoint para obtener todas las reservas de un cliente específico
-    @GetMapping("/cliente/{idCliente}")
-    public ResponseEntity<List<Reserva>> obtenerReservasPorCliente(@PathVariable Long idCliente) {
-        List<Reserva> reservas = reservaService.obtenerReservasPorCliente(idCliente);
-        if (reservas.isEmpty()) {
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT); // Si no hay reservas, devuelve un 204
-        }
-        return new ResponseEntity<>(reservas, HttpStatus.OK);
+    // Método para obtener todas las reservas de un cliente
+    @GetMapping("/cliente/{clienteId}")
+    public List<Reserva> obtenerReservasPorCliente(@PathVariable Long clienteId) {
+        return reservaService.obtenerReservasPorCliente(clienteId);
     }
 
-    // Endpoint para cancelar (eliminar) una reserva por ID
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> eliminarReserva(@PathVariable Long id) {
-        try {
-            reservaService.eliminarReserva(id);
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT); // 204 - Sin contenido
-        } catch (IllegalArgumentException e) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND); // Reserva no encontrada
-        }
+    // Método para actualizar una reserva
+    @PutMapping("/actualizar/{id}")
+    public Reserva actualizarReserva(@PathVariable Long id, @RequestBody Reserva nuevosDatos) {
+        return reservaService.actualizarReserva(id, nuevosDatos);
     }
 
-    // Endpoint para actualizar una reserva
-    @PutMapping("/{id}")
-    public ResponseEntity<Reserva> actualizarReserva(@PathVariable Long id, @RequestBody Reserva nuevosDatos) {
-        try {
-            Reserva reservaActualizada = reservaService.actualizarReserva(id, nuevosDatos);
-            return new ResponseEntity<>(reservaActualizada, HttpStatus.OK);
-        } catch (IllegalArgumentException e) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND); // Reserva no encontrada
-        }
+    // Método para eliminar una reserva
+    @DeleteMapping("/eliminar/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void eliminarReserva(@PathVariable Long id) {
+        reservaService.eliminarReserva(id);
     }
 
-    // Endpoint para generar factura a partir de una reserva de un cliente
-    @GetMapping("/factura/{idReserva}")
-    public ResponseEntity<Factura> generarFactura(@PathVariable Long idReserva) {
-        try {
-            // Llama al servicio para generar la factura
-            Factura factura = reservaService.generarFactura(idReserva);
-            return new ResponseEntity<>(factura, HttpStatus.OK); // Devuelve la factura generada
-        } catch (Exception e) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST); // Si hay algún error, se devuelve un 400
-        }
+    // Método para generar una factura a partir de una reserva
+    @PostMapping("/generarFactura/{id}")
+    public Factura generarFactura(@PathVariable Long id) {
+        return reservaService.generarFactura(id);
     }
 }
