@@ -1,5 +1,7 @@
+//Paquete.
 package es.iesjandula.hotelv1.gestionhotel.controller;
 
+//Importaciones.
 import es.iesjandula.hotelv1.gestionhotel.DTO.ReservaDTO;
 import es.iesjandula.hotelv1.gestionhotel.model.Factura;
 import es.iesjandula.hotelv1.gestionhotel.model.Reserva;
@@ -8,16 +10,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.time.LocalDate;
 import java.util.List;
 
+/**
+ * Definión del controlador ReservaController
+ */
 @RestController
 @RequestMapping("/reservas")
 public class ReservaController {
 
     @Autowired
-    private ReservaService reservaService;
+    private ReservaService reservaService; //Inyecciones de dependencias.
 
 
     // Endpoint para crear una nueva reserva
@@ -37,7 +40,7 @@ public class ReservaController {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST); // Errores en la creación de reserva
         }
     }
-  
+
     // Método para obtener una reserva por ID
     @GetMapping("/{id}")
     public Reserva obtenerReserva(@PathVariable Long id) {
