@@ -11,9 +11,17 @@ import java.util.List;
 
 @Repository
 public interface HabitacionRepository extends JpaRepository<Habitacion, Long> {
-    @Query("SELECT h FROM Habitacion h WHERE h.id NOT IN " + "(SELECT hab.id FROM Reserva r JOIN r.habitaciones hab " + "WHERE (r.fechaInicio <= :fechaFin AND r.fechaFin >= :fechaInicio))")
-    List<Habitacion> findHabitacionesDisponibles(LocalDate fechaInicio, LocalDate fechaFin);
 
-    @Query("SELECT h FROM Habitacion h JOIN h.reservas r " + "WHERE (r.fechaInicio <= :fechaFin AND r.fechaFin >= :fechaInicio)")
-    List<Habitacion> findHabitacionesOcupadas(@Param("fechaInicio") LocalDate fechaInicio, @Param("fechaFin") LocalDate fechaFin);
+    // Buscar habitaciones disponibles en un rango de fechas
+    @Query("SELECT h FROM Habitacion h WHERE h.id NOT IN " +
+            "(SELECT hab.id FROM Reserva r JOIN r.habitaciones hab " +
+            "WHERE (r.fechaInicio <= :fechaFin AND r.fechaFin >= :fechaInicio))")
+    List<Habitacion> findHabitacionesDisponibles(@Param("fechaInicio") LocalDate fechaInicio,
+                                                 @Param("fechaFin") LocalDate fechaFin);
+
+    // Buscar habitaciones ocupadas en un rango de fechas
+    @Query("SELECT h FROM Habitacion h JOIN h.reservas r " +
+            "WHERE (r.fechaInicio <= :fechaFin AND r.fechaFin >= :fechaInicio)")
+    List<Habitacion> findHabitacionesOcupadas(@Param("fechaInicio") LocalDate fechaInicio,
+                                              @Param("fechaFin") LocalDate fechaFin);
 }

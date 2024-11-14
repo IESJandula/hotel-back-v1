@@ -1,11 +1,10 @@
-//Paquete.
 package es.iesjandula.hotelv1.gestionhotel.service;
 
-//Importaciones.
 import es.iesjandula.hotelv1.gestionhotel.model.Factura;
 import es.iesjandula.hotelv1.gestionhotel.model.Reserva;
 import es.iesjandula.hotelv1.gestionhotel.model.Cliente;
 import es.iesjandula.hotelv1.gestionhotel.repository.FacturaRepository;
+import es.iesjandula.hotelv1.gestionhotel.exception.ReservaNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,7 +16,7 @@ import java.time.LocalDate;
 @Service
 public class FacturaService {
 
-    //Atributos
+    // Atributos
     @Autowired
     private FacturaRepository facturaRepository;
 
@@ -35,7 +34,7 @@ public class FacturaService {
 
         // Verificar si la reserva existe
         if (reserva == null) {
-            throw new IllegalArgumentException("Reserva no encontrada para el ID proporcionado.");
+            throw new ReservaNotFoundException("Reserva no encontrada para el ID proporcionado.");
         }
 
         // Obtener el cliente asociado a la reserva
@@ -46,7 +45,7 @@ public class FacturaService {
             throw new IllegalArgumentException("La reserva no tiene un cliente asociado.");
         }
 
-        // Calcular el total (supongamos un cálculo simplificado por número de noches y precio por noche)
+        // Calcular el total de la factura (por número de noches y precio por noche)
         long noches = java.time.temporal.ChronoUnit.DAYS.between(reserva.getFechaInicio(), reserva.getFechaFin());
         double total = noches * reserva.getPrecioPorNoche();
 
