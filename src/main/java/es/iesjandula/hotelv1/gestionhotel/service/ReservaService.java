@@ -60,7 +60,7 @@ public class ReservaService {
         reserva.setHabitaciones(habitacionesSeleccionadas.subList(0, numeroHabitaciones));
 
         // Asignar estado y precio por noche si no están configurados
-        reserva.setReserva(EstadoReserva.PENDIENTE);  // Estado predeterminado
+        reserva.setEstadoReserva(EstadoReserva.PENDIENTE);  // Estado predeterminado
         reserva.setPrecioPorNoche(100.0);  // Precio predeterminado, puedes modificar según tu lógica
 
         // Guardar la reserva
@@ -94,22 +94,18 @@ public class ReservaService {
     }
 
     // Método para generar factura a partir de una reserva
-    public Factura generarFactura(Long idReserva) throws Exception {
-        // Obtener la reserva por ID
-        Reserva reserva = reservaRepository.findById(idReserva).orElseThrow(() -> new Exception("Reserva no encontrada"));
+    public Factura generarFactura(Long idReserva) {
+        Reserva reserva = obtenerReservaPorId(idReserva);
 
-        // Verificar si la reserva tiene un cliente asignado
-        if (reserva.getCliente() == null) {
-            throw new RuntimeException("La reserva no tiene un cliente asignado.");
-        }
+        // Calcular el total de la factura
+        double totalFactura = reserva.getTotal();
 
         // Crear una nueva factura
         Factura factura = new Factura();
-        factura.setReserva(reserva);  // Asocia la reserva a la factura
-        factura.setTotal(reserva.getTotal());  // Calcula el total de la factura a partir del total de la reserva
-        factura.setFecha(LocalDate.now());  // Establece la fecha actual para la factura
+        factura.setReserva(reserva);  // Asocia la factura con la reserva
+        factura.setTotal(totalFactura);
 
-        // Guardar la factura en la base de datos
-        return facturaRepository.save(factura);  // Guarda la factura y la devuelve
+        // Guardar la factura
+        return facturaRepository.save(factura);
     }
 }

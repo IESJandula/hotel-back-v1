@@ -1,19 +1,16 @@
-//Paquete.
 package es.iesjandula.hotelv1.gestionhotel.model;
 
-//Importaciones.
 import java.io.Serializable;
 import java.util.Objects;
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
 
 /**
- * Definción de la clase ReservaHabitaciónid implementada de Serializable.
+ * Definición de la clase ReservaHabitaciónId implementada de Serializable.
  */
 @Embeddable
 public class ReservaHabitacionId implements Serializable {
 
-    //Atributos.
     @Column(name = "reserva_id")
     private Long reservaId;
 
@@ -46,7 +43,6 @@ public class ReservaHabitacionId implements Serializable {
         this.habitacionId = habitacionId;
     }
 
-    // Sobreescritura de los métdos equals y hashCode.
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -61,4 +57,3 @@ public class ReservaHabitacionId implements Serializable {
         return Objects.hash(reservaId, habitacionId);
     }
 }
-
