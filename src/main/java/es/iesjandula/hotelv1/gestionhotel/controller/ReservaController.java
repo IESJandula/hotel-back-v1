@@ -1,5 +1,6 @@
 package es.iesjandula.hotelv1.gestionhotel.controller;
 
+import es.iesjandula.hotelv1.gestionhotel.model.Factura;
 import es.iesjandula.hotelv1.gestionhotel.model.Reserva;
 import es.iesjandula.hotelv1.gestionhotel.service.ReservaService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,6 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @RestController
@@ -17,10 +19,21 @@ public class ReservaController {
     private ReservaService reservaService;
 
     // Endpoint para crear una nueva reserva
-    @PostMapping
-    public ResponseEntity<Reserva> crearReserva(@RequestBody Reserva reserva) {
-        Reserva nuevaReserva = reservaService.crearReserva(reserva);
-        return new ResponseEntity<>(nuevaReserva, HttpStatus.CREATED);
+    @PostMapping("/reservar")
+    public ResponseEntity<?> realizarReserva(
+            @RequestParam Long clienteId,
+            @RequestParam int numeroHabitaciones,
+            @RequestParam LocalDate fechaInicio,
+            @RequestParam LocalDate fechaFin
+    ) {
+        try {
+            // Llamamos al servicio para crear la reserva
+            Reserva reserva = reservaService.crearReserva(clienteId, numeroHabitaciones, fechaInicio, fechaFin);
+            return new ResponseEntity<>(reserva, HttpStatus.CREATED); // Reserva creada correctamente
+        } catch (Exception e) {
+            // Manejo de excepciones más claro
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST); // Errores en la creación de reserva
+        }
     }
 
     // Endpoint para obtener una reserva específica por ID
@@ -30,14 +43,17 @@ public class ReservaController {
             Reserva reserva = reservaService.obtenerReservaPorId(id);
             return new ResponseEntity<>(reserva, HttpStatus.OK);
         } catch (IllegalArgumentException e) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND); // Reserva no encontrada
         }
     }
 
-    // Endpoint para obtener todas las reservas de un usuario específico
-    @GetMapping("/usuario/{idUsuario}")
-    public ResponseEntity<List<Reserva>> obtenerReservasPorUsuario(@PathVariable Long idUsuario) {
-        List<Reserva> reservas = reservaService.obtenerReservasPorCliente(idUsuario);
+    // Endpoint para obtener todas las reservas de un cliente específico
+    @GetMapping("/cliente/{idCliente}")
+    public ResponseEntity<List<Reserva>> obtenerReservasPorCliente(@PathVariable Long idCliente) {
+        List<Reserva> reservas = reservaService.obtenerReservasPorCliente(idCliente);
+        if (reservas.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT); // Si no hay reservas, devuelve un 204
+        }
         return new ResponseEntity<>(reservas, HttpStatus.OK);
     }
 
@@ -46,9 +62,9 @@ public class ReservaController {
     public ResponseEntity<Void> eliminarReserva(@PathVariable Long id) {
         try {
             reservaService.eliminarReserva(id);
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT); // 204 - Sin contenido
         } catch (IllegalArgumentException e) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND); // Reserva no encontrada
         }
     }
 
@@ -59,7 +75,19 @@ public class ReservaController {
             Reserva reservaActualizada = reservaService.actualizarReserva(id, nuevosDatos);
             return new ResponseEntity<>(reservaActualizada, HttpStatus.OK);
         } catch (IllegalArgumentException e) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND); // Reserva no encontrada
+        }
+    }
+
+    // Endpoint para generar factura a partir de una reserva de un cliente
+    @GetMapping("/factura/{idReserva}")
+    public ResponseEntity<Factura> generarFactura(@PathVariable Long idReserva) {
+        try {
+            // Llama al servicio para generar la factura
+            Factura factura = reservaService.generarFactura(idReserva);
+            return new ResponseEntity<>(factura, HttpStatus.OK); // Devuelve la factura generada
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST); // Si hay algún error, se devuelve un 400
         }
     }
 }

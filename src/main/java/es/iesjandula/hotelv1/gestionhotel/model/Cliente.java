@@ -16,6 +16,10 @@ public class Cliente {
     @OneToMany(mappedBy = "cliente", cascade = CascadeType.ALL)
     private List<Reserva> reservas;
 
+    // Relación OneToMany con Factura
+    @OneToMany(mappedBy = "cliente", cascade = CascadeType.ALL)
+    private List<Factura> facturas;
+
     public Cliente() {
     }
 

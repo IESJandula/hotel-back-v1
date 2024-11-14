@@ -1,7 +1,6 @@
-//Paquete.
 package es.iesjandula.hotelv1.gestionhotel.model;
 
-//Importaciones.
+// Importaciones necesarias.
 import jakarta.persistence.*;
 import java.time.LocalDate;
 
@@ -11,7 +10,7 @@ import java.time.LocalDate;
 @Entity
 public class Factura {
 
-    //Atributos
+    // Atributos
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -48,7 +47,7 @@ public class Factura {
         this.fechaEmision = fechaEmision;
     }
 
-    // Métodos de acceso.
+    // Métodos de acceso (getters y setters)
 
     public Long getId() {
         return id;
@@ -87,6 +86,11 @@ public class Factura {
     }
 
     public void setFechaEmision(LocalDate fechaEmision) {
+        this.fechaEmision = fechaEmision;
+    }
+
+    // Método para obtener la fecha en formato más comprensible.
+    public void setFecha(LocalDate fechaEmision) {
         this.fechaEmision = fechaEmision;
     }
 
