@@ -1,11 +1,6 @@
 package es.iesjandula.hotelv1.gestionhotel.model;
 
-import jakarta.persistence.EmbeddedId;
-import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 
 @Entity
 @Table(name = "reserva_habitacion")
@@ -17,11 +12,13 @@ public class ReservaHabitacion {
     //Relaciones Many-to-One con Reserva: Una reserva puede incluir muchas habitaciones.
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "reserva_id", insertable = false, updatable = false)
+    @MapsId("reservaId")
     private Reserva reserva;
 
     //Relaciones ManyToOne con habitacion Una habitación puede estar en muchas reservas.
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "habitacion_id", insertable = false, updatable = false)
+    @MapsId("habitacionId")
     private Habitacion habitacion;
 
     // Constructor sin argumentos
