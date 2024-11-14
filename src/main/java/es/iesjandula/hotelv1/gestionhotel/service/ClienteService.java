@@ -44,4 +44,5 @@ public class ClienteService {
         Cliente cliente = obtenerCliente(id); // Busca el cliente o lanza una excepción si no existe
         return cliente.getReservas(); // Devuelve la lista de reservas del cliente
     }
+
 }
