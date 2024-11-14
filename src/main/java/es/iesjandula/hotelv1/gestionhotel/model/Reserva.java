@@ -1,4 +1,3 @@
-// Paquete
 package es.iesjandula.hotelv1.gestionhotel.model;
 
 import es.iesjandula.hotelv1.gestionhotel.Enum.EstadoReserva;
@@ -15,24 +14,24 @@ public class Reserva {
 
     private LocalDate fechaInicio;
     private LocalDate fechaFin;
-    private EstadoReserva reserva;
-    private double precioPorNoche;  // Campo para almacenar el precio por noche
+    private EstadoReserva estadoReserva;  // Campo que mantiene el estado de la reserva
+    private double precioPorNoche;
 
-    // Relación Many-to-One con Cliente: Una reserva está asociada a un único cliente.
+    // Relación Many-to-One con Cliente
     @ManyToOne
     @JoinColumn(name = "cliente_id")
     private Cliente cliente;
 
-    // Relación Many-to-Many con Habitacion: Una reserva puede incluir muchas habitaciones
+    // Relación Many-to-Many con Habitacion
     @ManyToMany
     @JoinTable(
-            name = "reserva_habitacion", // Nombre de la tabla de unión
-            joinColumns = @JoinColumn(name = "reserva_id"), // Columna de unión para Reserva
-            inverseJoinColumns = @JoinColumn(name = "habitacion_id") // Columna de unión para Habitacion
+            name = "reserva_habitacion",
+            joinColumns = @JoinColumn(name = "reserva_id"),
+            inverseJoinColumns = @JoinColumn(name = "habitacion_id")
     )
     private List<Habitacion> habitaciones;
 
-    // Relación One-to-Many con Pago: Una reserva puede tener muchos pagos
+    // Relación One-to-Many con Pago
     @OneToMany(mappedBy = "reserva", cascade = CascadeType.ALL)
     private List<Pago> pagos;
 
@@ -45,17 +44,16 @@ public class Reserva {
     private Factura factura;
 
     // Constructor vacío
-    public Reserva() {
-    }
+    public Reserva() {}
 
     // Constructor con parámetros
-    public Reserva(long id, LocalDate fechaInicio, LocalDate fechaFin, EstadoReserva reserva, Cliente cliente, double precioPorNoche) {
+    public Reserva(long id, LocalDate fechaInicio, LocalDate fechaFin, EstadoReserva estadoReserva, Cliente cliente, double precioPorNoche) {
         this.id = id;
         this.fechaInicio = fechaInicio;
         this.fechaFin = fechaFin;
-        this.reserva = reserva;
+        this.estadoReserva = estadoReserva; // Aquí se asigna el estado de la reserva
         this.cliente = cliente;
-        this.precioPorNoche = precioPorNoche;  // Asignación del precio por noche
+        this.precioPorNoche = precioPorNoche;
     }
 
     // Getters y setters
@@ -83,12 +81,12 @@ public class Reserva {
         this.fechaFin = fechaFin;
     }
 
-    public EstadoReserva getReserva() {
-        return reserva;
+    public EstadoReserva getEstadoReserva() {
+        return estadoReserva;
     }
 
-    public void setReserva(EstadoReserva reserva) {
-        this.reserva = reserva;
+    public void setEstadoReserva(EstadoReserva estadoReserva) {
+        this.estadoReserva = estadoReserva;  // Se usa este setter para cambiar el estado de la reserva
     }
 
     public Cliente getCliente() {
@@ -139,9 +137,10 @@ public class Reserva {
         this.factura = factura;
     }
 
+    // Método para calcular el total de la reserva
     public double getTotal() {
-        long dias = java.time.temporal.ChronoUnit.DAYS.between(fechaInicio, fechaFin); // Calcula los días entre la fecha de inicio y fin
-        return precioPorNoche * dias; // Multiplica el precio por noche por los días
+        long dias = java.time.temporal.ChronoUnit.DAYS.between(fechaInicio, fechaFin);
+        return precioPorNoche * dias;
     }
 
     @Override
@@ -150,7 +149,7 @@ public class Reserva {
                 "id=" + id +
                 ", fechaInicio=" + fechaInicio +
                 ", fechaFin=" + fechaFin +
-                ", reserva=" + reserva +
+                ", estadoReserva=" + estadoReserva +
                 ", cliente=" + cliente +
                 ", precioPorNoche=" + precioPorNoche +
                 ", habitaciones=" + habitaciones +

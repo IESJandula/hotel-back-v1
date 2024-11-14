@@ -13,10 +13,11 @@ public class ClienteService {
     @Autowired
     private ClienteRepository clienteRepository;
 
-    //Metodo para crear un cliente
+    // Método para crear un nuevo cliente
     public Cliente crearCliente(Cliente cliente) {
         return clienteRepository.save(cliente);
     }
+
 
     // Método para obtener un cliente - lanzamos una excepcion si el cliente no es encontrado
     public Cliente obtenerCliente(Long id) {
