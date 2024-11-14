@@ -1,5 +1,6 @@
 package es.iesjandula.hotelv1.gestionhotel.service;
 
+import es.iesjandula.hotelv1.gestionhotel.Enum.EstadoReserva;
 import es.iesjandula.hotelv1.gestionhotel.model.Cliente;
 import es.iesjandula.hotelv1.gestionhotel.model.Factura;
 import es.iesjandula.hotelv1.gestionhotel.model.Habitacion;
@@ -9,9 +10,6 @@ import es.iesjandula.hotelv1.gestionhotel.repository.HabitacionRepository;
 import es.iesjandula.hotelv1.gestionhotel.repository.ReservaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.time.LocalDate;
-import java.util.Optional;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -29,12 +27,12 @@ public class ReservaService {
     @Autowired
     private FacturaRepository facturaRepository;
 
-
     @Autowired
-    private ClienteService clienteService; // Asegúrate de tener el servicio de Cliente
+    private ClienteService clienteService;
 
-    //metodo para generar una nueva reserva
+    // Método para generar una nueva reserva
     public Reserva crearReserva(Long clienteId, int numeroHabitaciones, LocalDate fechaInicio, LocalDate fechaFin) {
+        // Obtener cliente
         Cliente cliente = clienteService.obtenerCliente(clienteId);
         if (cliente == null) {
             throw new RuntimeException("Cliente no encontrado con ID: " + clienteId);
@@ -42,29 +40,32 @@ public class ReservaService {
 
         // Verificar disponibilidad de habitaciones para todas las fechas de la reserva
         for (LocalDate fecha = fechaInicio; !fecha.isAfter(fechaFin); fecha = fecha.plusDays(1)) {
-            // PASAR AMBOS PARAMETROS: fechaInicio y fechaFin
             List<Habitacion> habitacionesDisponibles = habitacionRepository.findHabitacionesDisponibles(fechaInicio, fechaFin);
             if (habitacionesDisponibles.size() < numeroHabitaciones) {
                 throw new RuntimeException("No hay suficientes habitaciones disponibles para las fechas seleccionadas.");
             }
         }
 
-        // Crear la reserva y asignar las habitaciones
+        // Obtener habitaciones disponibles para las fechas seleccionadas
         List<Habitacion> habitacionesSeleccionadas = habitacionRepository.findHabitacionesDisponibles(fechaInicio, fechaFin);
         if (habitacionesSeleccionadas.size() < numeroHabitaciones) {
             throw new RuntimeException("No hay suficientes habitaciones disponibles para la reserva.");
         }
 
+        // Crear la reserva
         Reserva reserva = new Reserva();
         reserva.setCliente(cliente);
         reserva.setFechaInicio(fechaInicio);
         reserva.setFechaFin(fechaFin);
-        reserva.setHabitaciones(habitacionesSeleccionadas.subList(0, numeroHabitaciones)); // Asignamos las habitaciones seleccionadas
+        reserva.setHabitaciones(habitacionesSeleccionadas.subList(0, numeroHabitaciones));
 
-        // Guardar la reserva en la base de datos
+        // Asignar estado y precio por noche si no están configurados
+        reserva.setReserva(EstadoReserva.PENDIENTE);  // Estado predeterminado
+        reserva.setPrecioPorNoche(100.0);  // Precio predeterminado, puedes modificar según tu lógica
+
+        // Guardar la reserva
         return reservaRepository.save(reserva);
     }
-
 
     // Método para obtener una reserva por ID
     public Reserva obtenerReservaPorId(long idReserva) {
@@ -104,11 +105,11 @@ public class ReservaService {
 
         // Crear una nueva factura
         Factura factura = new Factura();
-        factura.setReserva(reserva); // Asocia la reserva a la factura
-        factura.setTotal(reserva.getTotal()); // Calcula el total de la factura a partir del total de la reserva
-        factura.setFecha(LocalDate.now()); // Establece la fecha actual para la factura
+        factura.setReserva(reserva);  // Asocia la reserva a la factura
+        factura.setTotal(reserva.getTotal());  // Calcula el total de la factura a partir del total de la reserva
+        factura.setFecha(LocalDate.now());  // Establece la fecha actual para la factura
 
         // Guardar la factura en la base de datos
-        return facturaRepository.save(factura); // Guarda la factura y la devuelve
+        return facturaRepository.save(factura);  // Guarda la factura y la devuelve
     }
 }
