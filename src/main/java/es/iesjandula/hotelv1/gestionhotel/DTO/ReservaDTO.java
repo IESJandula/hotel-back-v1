@@ -5,34 +5,19 @@ import java.time.LocalDate;
 
 public class ReservaDTO {
 
-    private LocalDate fechaEntrada;
-    private LocalDate fechaSalida;
+    private Long clienteId;
     private int numeroHabitaciones;
-
-    public ReservaDTO() {}
-
-    public ReservaDTO(LocalDate fechaEntrada, LocalDate fechaSalida, int numeroHabitaciones) {
-        this.fechaEntrada = fechaEntrada;
-        this.fechaSalida = fechaSalida;
-        this.numeroHabitaciones = numeroHabitaciones;
-    }
+    private LocalDate fechaInicio;
+    private LocalDate fechaFin;
 
     // Getters y setters
 
-    public LocalDate getFechaEntrada() {
-        return fechaEntrada;
+    public Long getClienteId() {
+        return clienteId;
     }
 
-    public void setFechaEntrada(LocalDate fechaEntrada) {
-        this.fechaEntrada = fechaEntrada;
-    }
-
-    public LocalDate getFechaSalida() {
-        return fechaSalida;
-    }
-
-    public void setFechaSalida(LocalDate fechaSalida) {
-        this.fechaSalida = fechaSalida;
+    public void setClienteId(Long clienteId) {
+        this.clienteId = clienteId;
     }
 
     public int getNumeroHabitaciones() {
@@ -41,5 +26,21 @@ public class ReservaDTO {
 
     public void setNumeroHabitaciones(int numeroHabitaciones) {
         this.numeroHabitaciones = numeroHabitaciones;
+    }
+
+    public LocalDate getFechaInicio() {
+        return fechaInicio;
+    }
+
+    public void setFechaInicio(LocalDate fechaInicio) {
+        this.fechaInicio = fechaInicio;
+    }
+
+    public LocalDate getFechaFin() {
+        return fechaFin;
+    }
+
+    public void setFechaFin(LocalDate fechaFin) {
+        this.fechaFin = fechaFin;
     }
 }

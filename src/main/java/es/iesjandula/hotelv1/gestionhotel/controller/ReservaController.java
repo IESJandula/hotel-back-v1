@@ -1,5 +1,6 @@
 package es.iesjandula.hotelv1.gestionhotel.controller;
 
+import es.iesjandula.hotelv1.gestionhotel.DTO.ReservaDTO;
 import es.iesjandula.hotelv1.gestionhotel.model.Factura;
 import es.iesjandula.hotelv1.gestionhotel.model.Reserva;
 import es.iesjandula.hotelv1.gestionhotel.service.ReservaService;
@@ -17,19 +18,25 @@ public class ReservaController {
     @Autowired
     private ReservaService reservaService;
 
-    // Método para crear una nueva reserva
-    @PostMapping("/crear")
-    @ResponseStatus(HttpStatus.CREATED)
-    public Reserva crearReserva(@RequestParam Long clienteId,
-                                @RequestParam int numeroHabitaciones,
-                                @RequestParam String fechaInicio,
-                                @RequestParam String fechaFin) {
-        // Aquí convendría convertir las fechas desde String a LocalDate
-        LocalDate inicio = LocalDate.parse(fechaInicio);
-        LocalDate fin = LocalDate.parse(fechaFin);
-        return reservaService.crearReserva(clienteId, numeroHabitaciones, inicio, fin);
-    }
 
+    // Endpoint para crear una nueva reserva
+    @PostMapping("/reservar")
+    public ResponseEntity<?> realizarReserva(@RequestBody ReservaDTO reservaDTO) {
+        try {
+            // Llamamos al servicio para crear la reserva utilizando los datos del DTO
+            Reserva reserva = reservaService.crearReserva(
+                    reservaDTO.getClienteId(),
+                    reservaDTO.getNumeroHabitaciones(),
+                    reservaDTO.getFechaInicio(),
+                    reservaDTO.getFechaFin()
+            );
+            return new ResponseEntity<>(reserva, HttpStatus.CREATED); // Reserva creada correctamente
+        } catch (Exception e) {
+            // Manejo de excepciones más claro
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST); // Errores en la creación de reserva
+        }
+    }
+  
     // Método para obtener una reserva por ID
     @GetMapping("/{id}")
     public Reserva obtenerReserva(@PathVariable Long id) {
