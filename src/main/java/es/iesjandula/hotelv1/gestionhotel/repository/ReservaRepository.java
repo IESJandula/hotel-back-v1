@@ -8,4 +8,5 @@ import java.util.List;
 public interface ReservaRepository extends JpaRepository<Reserva, Long> {
     // Este método busca todas las reservas asociadas a un cliente usando su id.
     List<Reserva> findByClienteId(Long clienteId);
+
 }

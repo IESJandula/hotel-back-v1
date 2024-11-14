@@ -1,5 +1,6 @@
 package es.iesjandula.hotelv1.gestionhotel.controller;
 
+import es.iesjandula.hotelv1.gestionhotel.DTO.ReservaDTO;
 import es.iesjandula.hotelv1.gestionhotel.model.Factura;
 import es.iesjandula.hotelv1.gestionhotel.model.Reserva;
 import es.iesjandula.hotelv1.gestionhotel.service.ReservaService;
@@ -20,21 +21,22 @@ public class ReservaController {
 
     // Endpoint para crear una nueva reserva
     @PostMapping("/reservar")
-    public ResponseEntity<?> realizarReserva(
-            @RequestParam Long clienteId,
-            @RequestParam int numeroHabitaciones,
-            @RequestParam LocalDate fechaInicio,
-            @RequestParam LocalDate fechaFin
-    ) {
+    public ResponseEntity<?> realizarReserva(@RequestBody ReservaDTO reservaDTO) {
         try {
-            // Llamamos al servicio para crear la reserva
-            Reserva reserva = reservaService.crearReserva(clienteId, numeroHabitaciones, fechaInicio, fechaFin);
+            // Llamamos al servicio para crear la reserva utilizando los datos del DTO
+            Reserva reserva = reservaService.crearReserva(
+                    reservaDTO.getClienteId(),
+                    reservaDTO.getNumeroHabitaciones(),
+                    reservaDTO.getFechaInicio(),
+                    reservaDTO.getFechaFin()
+            );
             return new ResponseEntity<>(reserva, HttpStatus.CREATED); // Reserva creada correctamente
         } catch (Exception e) {
             // Manejo de excepciones más claro
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST); // Errores en la creación de reserva
         }
     }
+
 
     // Endpoint para obtener una reserva específica por ID
     @GetMapping("/{id}")
