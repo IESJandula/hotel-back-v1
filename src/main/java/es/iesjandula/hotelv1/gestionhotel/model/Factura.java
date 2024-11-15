@@ -1,6 +1,6 @@
 package es.iesjandula.hotelv1.gestionhotel.model;
 
-// Importaciones necesarias.
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import java.time.LocalDate;
 
@@ -10,24 +10,21 @@ import java.time.LocalDate;
 @Entity
 public class Factura {
 
-    // Atributos
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    // Relación OneToOne con Reserva
     @OneToOne
-    @JoinColumn(name = "reserva_id", referencedColumnName = "id", nullable = false)  // Relación obligatoria con Reserva
+    @JoinColumn(name = "reserva_id", referencedColumnName = "id", nullable = false)
+    @JsonManagedReference  // Evita la serialización recursiva en la relación con Reserva
     private Reserva reserva;
 
-    // Relación ManyToOne con Cliente
     @ManyToOne
-    @JoinColumn(name = "cliente_id", referencedColumnName = "id", nullable = false)  // Relación obligatoria con Cliente
+    @JoinColumn(name = "cliente_id", referencedColumnName = "id", nullable = false)
+    @JsonManagedReference  // Evita la serialización recursiva en la relación con Cliente
     private Cliente cliente;
 
     private double total;
-
-    // La fecha de emisión no debe ser nula en la base de datos
     private LocalDate fechaEmision;
 
     // Constructor vacío obligatorio
@@ -47,8 +44,7 @@ public class Factura {
         this.fechaEmision = fechaEmision;
     }
 
-    // Métodos de acceso (getters y setters)
-
+    // Getters y setters
     public Long getId() {
         return id;
     }
@@ -89,25 +85,14 @@ public class Factura {
         this.fechaEmision = fechaEmision;
     }
 
-    // Método para obtener la fecha en formato más comprensible.
-    public void setFecha(LocalDate fechaEmision) {
-        this.fechaEmision = fechaEmision;
-    }
-
-    // Método toString() sobreescrito para mostrar solo información relevante
     @Override
     public String toString() {
-        return String.format(
-                "Factura ID: %d\n" +
-                        "Cliente: %s\n" +
-                        "Reserva ID: %d\n" +
-                        "Total: %.2f\n" +
-                        "Fecha de Emisión: %s",
-                id,
-                cliente != null ? cliente.getNombre() : "No asignado",
-                reserva != null ? reserva.getId() : "No asignada",
-                total,
-                fechaEmision != null ? fechaEmision.toString() : "No asignada"
-        );
+        return "Factura{" +
+                "id=" + id +
+                ", reserva=" + reserva +
+                ", cliente=" + cliente +
+                ", total=" + total +
+                ", fechaEmision=" + fechaEmision +
+                '}';
     }
 }
