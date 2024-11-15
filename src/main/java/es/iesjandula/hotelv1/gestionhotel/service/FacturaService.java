@@ -1,58 +1,65 @@
+// Servicio FacturaService
 package es.iesjandula.hotelv1.gestionhotel.service;
 
 import es.iesjandula.hotelv1.gestionhotel.model.Factura;
 import es.iesjandula.hotelv1.gestionhotel.model.Reserva;
-import es.iesjandula.hotelv1.gestionhotel.model.Cliente;
-import es.iesjandula.hotelv1.gestionhotel.repository.FacturaRepository;
 import es.iesjandula.hotelv1.gestionhotel.exception.ReservaNotFoundException;
+import es.iesjandula.hotelv1.gestionhotel.repository.FacturaRepository;
+import es.iesjandula.hotelv1.gestionhotel.repository.ReservaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
+import java.util.List;
 
-/**
- * Servicio para manejar la lógica de negocio de las facturas.
- */
 @Service
 public class FacturaService {
 
-    // Atributos
+    @Autowired
+    private ReservaRepository reservaRepository;
+
     @Autowired
     private FacturaRepository facturaRepository;
 
-    @Autowired
-    private ReservaService reservaService;
+    public Factura generarFactura(Long idReserva) throws ReservaNotFoundException {
+        // Buscar la reserva en el repositorio
+        Reserva reserva = reservaRepository.findById(idReserva).orElseThrow(() -> new ReservaNotFoundException("Reserva no encontrada"));
 
-    /**
-     * Genera una factura basada en la reserva con el ID proporcionado.
-     * @param idReserva El ID de la reserva.
-     * @return La factura generada.
-     */
-    public Factura generarFactura(Long idReserva) {
-        // Obtener la reserva por ID
-        Reserva reserva = reservaService.obtenerReservaPorId(idReserva);
-
-        // Verificar si la reserva existe
-        if (reserva == null) {
-            throw new ReservaNotFoundException("Reserva no encontrada para el ID proporcionado.");
+        // Verificar si ya existe una factura para esta reserva
+        Factura existingFactura = facturaRepository.findByReserva(reserva);
+        if (existingFactura != null) {
+            // Si ya existe, lanzar una excepción o devolver la factura existente
+            throw new IllegalStateException("Ya existe una factura generada para esta reserva.");
         }
 
-        // Obtener el cliente asociado a la reserva
-        Cliente cliente = reserva.getCliente();
+        // Lógica para generar la factura
+        // Asegúrate de que el cálculo del total sea correcto, dependiendo de la lógica de tu modelo
+        double total = reserva.getPrecioPorNoche() * (reserva.getFechaFin().compareTo(reserva.getFechaInicio()));
 
-        // Verificar si el cliente está asociado
-        if (cliente == null) {
-            throw new IllegalArgumentException("La reserva no tiene un cliente asociado.");
+        // Si el total es 0 o incorrecto, verifica los valores de la reserva
+        if (total <= 0) {
+            throw new IllegalArgumentException("El cálculo del total de la factura es inválido.");
         }
 
-        // Calcular el total de la factura (por número de noches y precio por noche)
-        long noches = java.time.temporal.ChronoUnit.DAYS.between(reserva.getFechaInicio(), reserva.getFechaFin());
-        double total = noches * reserva.getPrecioPorNoche();
+        Factura factura = new Factura();
+        factura.setReserva(reserva);
+        factura.setCliente(reserva.getCliente());
+        factura.setTotal(total);
+        factura.setFechaEmision(LocalDate.now());
 
-        // Crear la factura
-        Factura factura = new Factura(reserva, cliente, total, LocalDate.now());
+        // Guardar la factura en la base de datos
+        facturaRepository.save(factura);
 
-        // Guardar y retornar la factura
-        return facturaRepository.save(factura);
+        return factura;
+    }
+
+    public List<Factura> obtenerTodasLasFacturas() {
+        return facturaRepository.findAll();  // Devuelve todas las facturas
+    }
+
+    // Método para obtener facturas por cliente
+    public List<Factura> obtenerFacturasPorCliente(Long clienteId) {
+        return facturaRepository.findByClienteId(clienteId);  // Buscar facturas por clienteId
     }
 }
