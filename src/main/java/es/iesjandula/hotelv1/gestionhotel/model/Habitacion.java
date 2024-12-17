@@ -18,8 +18,7 @@ public class Habitacion {
     @Enumerated(EnumType.STRING)
     private EstadoHabitacion estado;
 
-    public Habitacion(Long id, String numero, String tipo, Double precio, int capacidad, EstadoHabitacion estado) {
-        this.id = id;
+    public Habitacion(String numero, String tipo, Double precio, int capacidad, EstadoHabitacion estado) {
         this.numero = numero;
         this.tipo = tipo;
         this.precio = precio;
