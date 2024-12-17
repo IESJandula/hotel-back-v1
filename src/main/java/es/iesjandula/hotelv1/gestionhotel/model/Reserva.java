@@ -1,5 +1,6 @@
 package es.iesjandula.hotelv1.gestionhotel.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import es.iesjandula.hotelv1.gestionhotel.Enum.EstadoReserva;
 import jakarta.persistence.*;
 
@@ -20,6 +21,7 @@ public class Reserva {
     // Relación Many-to-One con Cliente
     @ManyToOne
     @JoinColumn(name = "cliente_id")
+    @JsonIgnore
     private Cliente cliente;
 
     // Relación Many-to-Many con Habitacion
@@ -47,8 +49,7 @@ public class Reserva {
     public Reserva() {}
 
     // Constructor con parámetros
-    public Reserva(long id, LocalDate fechaInicio, LocalDate fechaFin, EstadoReserva estadoReserva, Cliente cliente, double precioPorNoche) {
-        this.id = id;
+    public Reserva(LocalDate fechaInicio, LocalDate fechaFin, EstadoReserva estadoReserva, Cliente cliente, double precioPorNoche) {
         this.fechaInicio = fechaInicio;
         this.fechaFin = fechaFin;
         this.estadoReserva = estadoReserva; // Aquí se asigna el estado de la reserva
