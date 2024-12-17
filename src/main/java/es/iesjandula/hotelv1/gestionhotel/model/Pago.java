@@ -48,8 +48,7 @@ public class Pago {
      * @param estado
      */
 
-    public Pago(long id, double monto, Date fecha, MetodoPago metodo, EstadoPago estado) {
-        this.id = id;
+    public Pago(double monto, Date fecha, MetodoPago metodo, EstadoPago estado) {
         this.monto = monto;
         this.fecha = fecha;
         this.metodo = metodo;
