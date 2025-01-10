@@ -96,6 +96,5 @@ public class FacturaController {
                 .orElseGet(() -> ResponseEntity.notFound().build()); // Si no existe, retorna 404 Not Found
     }
 
-
-
+    //Pruebas
 }
