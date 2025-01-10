@@ -77,4 +77,24 @@ public class FacturaController {
         facturaRepository.deleteById(id);
         return ResponseEntity.noContent().build();
     }
+
+    // Obtener todas las facturas
+    @GetMapping
+    public ResponseEntity<List<Factura>> obtenerTodasLasFacturas() {
+        List<Factura> facturas = facturaService.obtenerTodasLasFacturas();
+        if (facturas.isEmpty()) {
+            return ResponseEntity.noContent().build(); // No hay contenido
+        }
+        return ResponseEntity.ok(facturas); // 200 OK con la lista de facturas
+    }
+
+    // Obtener una factura por su ID
+    @GetMapping("/{id}")
+    public ResponseEntity<Factura> obtenerFacturaPorId(@PathVariable Long id) {
+        Optional<Factura> factura = facturaService.obtenerFacturaPorId(id);
+        return factura.map(ResponseEntity::ok) // Si existe, retorna 200 OK con la factura
+                .orElseGet(() -> ResponseEntity.notFound().build()); // Si no existe, retorna 404 Not Found
+    }
+
+    //Pruebas
 }

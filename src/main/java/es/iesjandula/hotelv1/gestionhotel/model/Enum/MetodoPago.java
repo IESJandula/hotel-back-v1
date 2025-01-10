@@ -9,7 +9,7 @@ public enum MetodoPago {
     TARJETA_DEBITO("Tarjeta de Debito"),
     EFECTIVO("Efectivo"),
     TRANSFERENCIA("Transferencia"),
-    PAYPAL("Paypal"),;
+    PAYPAL("Paypal");
 
     //Atributo nombre del estado.
     private final String nombre;
