@@ -178,4 +178,14 @@ public class HabitacionService {
 
         return habitacionesOcupadas;
     }
+
+    // Método para obtener habitaciones disponibles filtradas por número de personas
+    public List<Habitacion> obtenerHabitacionesDisponiblesPorPersonas(int numeroPersonas) {
+        // Filtrar habitaciones disponibles y que cumplan con la capacidad requerida
+        return habitacionRepository.findAll()
+                .stream()
+                .filter(habitacion -> habitacion.getEstado() == EstadoHabitacion.DISPONIBLE &&
+                        habitacion.getCapacidad() >= numeroPersonas)
+                .collect(Collectors.toList());
+    }
 }
