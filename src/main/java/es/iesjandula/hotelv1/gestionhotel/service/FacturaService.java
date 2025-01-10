@@ -8,6 +8,7 @@ import com.itextpdf.layout.element.Paragraph;
 import com.itextpdf.layout.element.Table;
 import com.itextpdf.layout.properties.TextAlignment;
 import es.iesjandula.hotelv1.gestionhotel.exception.Cliente.ClienteNoEncontradoException;
+import es.iesjandula.hotelv1.gestionhotel.exception.Factura.FacturaNoEncontradaException;
 import es.iesjandula.hotelv1.gestionhotel.exception.Reserva.ResevaNoEncontradaException;
 import es.iesjandula.hotelv1.gestionhotel.model.Cliente;
 import es.iesjandula.hotelv1.gestionhotel.model.DTO.Factura.FacturaCrearDTO;
@@ -16,6 +17,7 @@ import es.iesjandula.hotelv1.gestionhotel.model.Reserva;
 import es.iesjandula.hotelv1.gestionhotel.repository.ClienteRepository;
 import es.iesjandula.hotelv1.gestionhotel.repository.FacturaRepository;
 import es.iesjandula.hotelv1.gestionhotel.repository.ReservaRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -23,6 +25,8 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.List;
+import java.util.Optional;
 
 @Service
 public class FacturaService {
@@ -57,13 +61,13 @@ public class FacturaService {
         }
         factura.setTotal(totalConDescuento);
 
-        // Si tienes un IVA que calcular, lo aplicamos aquí también
-        double iva = totalConDescuento * 0.21; // Ejemplo de IVA del 21%
+        // Cálculo del IVA (21%)
+        double iva = totalConDescuento * 0.21;
         double totalConIva = totalConDescuento + iva;
-        factura.setTotal(totalConIva);
 
-        // Establecemos el descuento en la factura
+        // Establecemos el descuento y el total con IVA en la factura
         factura.setDescuento(facturaDTO.getDescuento());
+        factura.setTotal(totalConIva);
 
         // Fecha de emisión de la factura
         factura.setFechaEmision(LocalDate.from(LocalDateTime.parse(facturaDTO.getFechaEmision())));
@@ -90,8 +94,13 @@ public class FacturaService {
         // Información de la factura
         document.add(new Paragraph("ID Factura: " + factura.getId()));
         document.add(new Paragraph("Fecha de emisión: " + factura.getFechaEmision()));
-        document.add(new Paragraph("Total sin IVA: " + String.format("%.2f", factura.getTotal() / 1.21) + " EUR"));
-        document.add(new Paragraph("IVA (21%): " + String.format("%.2f", factura.getTotal() - factura.getTotal() / 1.21) + " EUR"));
+
+        // Calcular el total sin IVA (se calcula dividiendo el total con IVA entre 1.21)
+        double totalSinIva = factura.getTotal() / 1.21;
+
+        // Añadimos los valores al documento PDF
+        document.add(new Paragraph("Total sin IVA: " + String.format("%.2f", totalSinIva) + " EUR"));
+        document.add(new Paragraph("IVA (21%): " + String.format("%.2f", factura.getTotal() - totalSinIva) + " EUR"));
         document.add(new Paragraph("Total con IVA: " + String.format("%.2f", factura.getTotal()) + " EUR"));
 
         // Cliente y reserva
@@ -118,5 +127,39 @@ public class FacturaService {
         document.close();
         return outputStream.toByteArray();
     }
+
+
+    // Obtener todas las facturas
+    public List<Factura> obtenerTodasLasFacturas() {
+        return facturaRepository.findAll();
+    }
+
+    // Obtener una factura por su ID
+    public Optional<Factura> obtenerFacturaPorId(Long id) {
+        return facturaRepository.findById(id);
+    }
+
+    // Actualizar una factura
+    @Transactional
+    public Factura actualizarFactura(Long id, FacturaCrearDTO dto) {
+        Factura facturaExistente = facturaRepository.findById(id)
+                .orElseThrow(() -> new FacturaNoEncontradaException("Factura no encontrada"));
+
+        // Actualizamos la factura con los nuevos datos del DTO
+
+        if(dto.getTotal() !=null)facturaExistente.setTotal(dto.getTotal());
+        if(dto.getDescuento() !=null)facturaExistente.setDescuento(dto.getDescuento());
+
+
+        // Guardamos los cambios
+        return facturaRepository.save(facturaExistente);
+    }
+
+    // Eliminar una factura
+    @Transactional
+    public void eliminarFactura(Long id) {
+        facturaRepository.deleteById(id);
+    }
+
 
 }

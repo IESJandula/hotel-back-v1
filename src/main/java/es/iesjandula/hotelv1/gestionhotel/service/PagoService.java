@@ -46,45 +46,46 @@ public class PagoService {
     @Transactional
     public void crearPago(Long reservaId, DatosDePago datosDePago) {
         try {
-            // Buscar la reserva
+            // Paso 1: Buscar reserva...
             System.out.println("Paso 1: Buscar reserva...");
             Reserva reserva = reservaRepository.findById(reservaId)
                     .orElseThrow(() -> new ReservaNotFoundException("Reserva no encontrada"));
             System.out.println("Reserva encontrada: " + reserva);
 
-            // Validar que la reserva esté en estado pendiente
+            // Paso 2: Validar estado de reserva...
             System.out.println("Paso 2: Validar estado de reserva...");
             if (reserva.getEstadoReserva() != EstadoReserva.PENDIENTE) {
                 throw new IllegalStateException("El estado no es pendiente, no se puede procesar el pago.");
             }
 
-            // Verificar disponibilidad de habitaciones
+            // Paso 3: Verificar disponibilidad de habitaciones (solo RESERVADAS son válidas para el pago)
             System.out.println("Paso 3: Verificar disponibilidad de habitaciones...");
             for (Habitacion habitacion : reserva.getReservasHabitaciones()) {
-                if (habitacion.getEstado() != EstadoHabitacion.DISPONIBLE) {
-                    throw new IllegalStateException("Una o más habitaciones no están disponibles.");
+                // Solo las habitaciones en estado RESERVADA pueden proceder al pago
+                if (habitacion.getEstado() != EstadoHabitacion.OCUPADA) {
+                    throw new IllegalStateException("Una o más habitaciones no están reservadas y no se puede procesar el pago.");
                 }
             }
 
-            // Calcular el precio total
+            // Paso 4: Calcular precio total...
             System.out.println("Paso 4: Calcular precio total...");
             long numeroDeNoches = ChronoUnit.DAYS.between(reserva.getFechaInicio(), reserva.getFechaFin());
             Double precioTotal = numeroDeNoches * reserva.getPrecioPorNoche();
             System.out.println("Precio total calculado: " + precioTotal);
 
-            // Verificar el monto del pago
+            // Paso 5: Verificar monto...
             System.out.println("Paso 5: Verificar monto...");
             if (!datosDePago.getMonto().equals(precioTotal)) {
                 throw new IllegalStateException("El monto del pago no coincide con el precio.");
             }
 
-            // Simular el proceso de pago
+            // Paso 6: Simular el proceso de pago...
             System.out.println("Paso 6: Simular proceso de pago...");
             if (!simularPago(datosDePago)) {
                 throw new IllegalStateException("El pago no fue válido.");
             }
 
-            // Crear y guardar el pago
+            // Paso 7: Crear entidad Pago...
             System.out.println("Paso 7: Crear entidad Pago...");
             Pago pago = new Pago(
                     datosDePago.getMonto(),
@@ -97,18 +98,18 @@ public class PagoService {
             pagoRepository.flush(); // Forzar escritura inmediata en la base de datos
             System.out.println("Pago guardado exitosamente en la base de datos: " + pago);
 
-            // Cambiar el estado de la reserva a "confirmada"
+            // Paso 8: Cambiar estado de la reserva...
             System.out.println("Paso 8: Cambiar estado de la reserva...");
             reserva.setEstadoReserva(EstadoReserva.CONFIRMADA);
             reservaRepository.save(reserva);
 
-            // Cambiar el estado de las habitaciones asociadas a "ocupadas"
+            // Paso 9: Cambiar estado de las habitaciones...
             System.out.println("Paso 9: Cambiar estado de las habitaciones...");
             List<Habitacion> habitaciones = reserva.getReservasHabitaciones();
             habitaciones.forEach(habitacion -> habitacion.setEstado(EstadoHabitacion.OCUPADA));
             habitacionRepository.saveAll(habitaciones);
 
-            // Confirmación al cliente
+            // Paso 10: Enviar confirmación...
             System.out.println("Paso 10: Enviar confirmación...");
             enviarConfirmacionReserva(reserva.getClienteReserva());
 
@@ -118,6 +119,7 @@ public class PagoService {
             throw new RuntimeException("Error durante la creación del pago.", e);
         }
     }
+
 
 
 
