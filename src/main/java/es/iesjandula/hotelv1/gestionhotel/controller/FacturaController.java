@@ -97,14 +97,5 @@ public class FacturaController {
     }
 
 
-    // Actualizar una factura existente
-    @PutMapping("/{id}")
-    public ResponseEntity<Factura> actualizarFactura(@PathVariable Long id, @RequestBody FacturaCrearDTO facturaDTO) {
-        try {
-            Factura facturaActualizada = facturaService.actualizarFactura(id, facturaDTO);
-            return ResponseEntity.ok(facturaActualizada); // 200 OK con la factura actualizada
-        } catch (Exception e) {
-            return ResponseEntity.notFound().build(); // 404 Not Found si no se encuentra la factura
-        }
-    }
+
 }
